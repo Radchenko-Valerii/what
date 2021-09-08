@@ -7,17 +7,18 @@ const userCards = data.map(function (userObj) {
 });
 cardsContainer.append(...userCards);
 
+
 /**
  * Создает карточку на основании обьекта пользователя
  * @param {object} userObj обьект с даннывми пользователя
  * @returns {HTMLLIElement} верстка карточки
  */
 function generateUserCard(userObj) {
-  const { id, firstName, description, profilePicture } = userObj;
+  let { id, firstName, lastName, description='Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam quis risus eget urna mollis ornare vel eu leo.', profilePicture, contacts } = userObj;
 
   const img = createElement('img', {
     classNames: ['img'],
-    attrs: { src: profilePicture, alt: firstName , 'data-id' : id},
+    attrs: { src: profilePicture, alt: firstName+' '+lastName, 'data-id' : id},
   });
   img.addEventListener('error', deleteHandler);
   img.addEventListener('load', imageLoadHandler);
@@ -25,8 +26,9 @@ function generateUserCard(userObj) {
   const userName = createElement(
     'h2',
     { classNames: ['cardName'] },
-    document.createTextNode(firstName)
+    document.createTextNode(firstName+' '+lastName)
   );
+ 
 
   const cardDescription = createElement(
     'p',
@@ -55,12 +57,15 @@ function generateUserCard(userObj) {
     initails
   );
 
+  const linkWrapper = createElement('div', {classNames: ['linkWrapper']}, ...generateLinks(contacts));
+
   const article = createElement(
     'article',
     { classNames: ['userCard'] },
     imgWrapper,
     userName,
-    cardDescription
+    cardDescription,
+    linkWrapper
   );
 
   const userCard = createElement(
@@ -93,7 +98,15 @@ function stringToColour(str) {
   return colour;
 }
 
-function generateLinks(contacts) {
-  // пройтись мапом выернуть уже готовые элементы ссылок
-  // воспользоватся мапой для определния какую картинку делать
+function generateLinks(contacts){
+  const linksArray = contacts.map((contact) => {
+
+    const url = new URL(contact).hostname;
+    if(SUPPORTED_SOCIAL_NETWORKS.has(url)){
+      const link = createElement('a', { classNames: SUPPORTED_SOCIAL_NETWORKS.get(url)})
+      link.href = contact;
+      return link;
+    };
+  });
+  return linksArray;
 }
