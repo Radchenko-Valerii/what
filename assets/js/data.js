@@ -8,8 +8,7 @@ const data = [
     contacts: [
       'https://www.facebook.com/JasonStatham/',
       'https://twitter.com/realjstatham',
-      'https://www.instagram.com/jasonstatham/?hl=ru',
-      'https://yotube.com'
+      'https://www.instagram.com/jasonstatham/?hl=ru'
     ],
   },
   {

@@ -16,9 +16,16 @@ cardsContainer.append(...userCards);
 function generateUserCard(userObj) {
   let { id, firstName, lastName, description='Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam quis risus eget urna mollis ornare vel eu leo.', profilePicture, contacts} = userObj;
 
+  if(typeof firstName !== 'string' || firstName == false){
+    firstName = 'unknown'
+  }
+  if(typeof lastName !== 'string' || lastName == false){
+    lastName = 'unknown'
+  }
+
   const img = createElement('img', {
     classNames: ['img'],
-    attrs: { src: profilePicture, alt: firstName+' '+lastName, 'data-id' : id},
+    attrs: { src: profilePicture, alt: firstName+' '+lastName, 'data-id' : id, "title": firstName + ' ' + lastName},
   });
   img.addEventListener('error', deleteHandler);
   img.addEventListener('load', imageLoadHandler);
@@ -26,6 +33,7 @@ function generateUserCard(userObj) {
   const userName = createElement(
     'h2',
     { classNames: ['cardName'] },
+    
     document.createTextNode(firstName+' '+lastName)
   );
  
@@ -46,7 +54,7 @@ function generateUserCard(userObj) {
         .trim()
         .split(' ')
         .map((word) => word[0])
-        .join(' ')
+        .join('')
     )
   );
   
@@ -74,7 +82,8 @@ function generateUserCard(userObj) {
     { classNames: ['cardWrapper'] },
     article
   );
-
+  userCard.addEventListener('click', function(){this.classList.add('clicked-card')})
+  
   return userCard;
 }
 
@@ -98,6 +107,8 @@ function stringToColour(str) {
   }
   return colour;
 }
+
+
 
 function generateLinks(contacts){
   const linksArray = contacts.map((contact) => {
