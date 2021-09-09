@@ -82,6 +82,6 @@
 .clicked-card{
   transition: 0.7s;
   color: rgb(200, 200, 200);
-  border: 5px solid rgb(255, 0, 0);
-  background-color: rgb(255, 0, 0);
+  border: 5px solid #393186;
+  background-color: #393186;
 }
